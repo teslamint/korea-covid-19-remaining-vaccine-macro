@@ -68,6 +68,8 @@ def pretty_print(json_object):
         if org.get('status') == "CLOSED" or org.get('status') == "EXHAUSTED" or org.get('status') == "UNAVAILABLE":
             continue
         print(f"잔여갯수: {org.get('leftCounts')}\t상태: {org.get('status')}\t기관명: {org.get('orgName')}\t주소: {org.get('address')}")
+    if len(json_object["organizations"]) == 0:
+        print("범위 내에 검색이 되는 병원이 없습니다. 좌표값을 다시 확인해주세요.")
 
 
 def fill_str_with_space(input_s, max_size=40, fill_char=" "):
