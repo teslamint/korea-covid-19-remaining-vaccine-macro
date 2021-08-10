@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>좌표 찾기</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30ddee7176f40891cf36a9e3be7962cd&libraries=drawing"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0DBRXRMBQ8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-0DBRXRMBQ8');
+  </script>
+</head>
+<body>
+  <div id="map" style="width: 800px; height: 600px;"></div>
+
+  <script>
+    const map = new kakao.maps.Map(document.getElementById('map'), {
+      center: new kakao.maps.LatLng(36.41, 127.85),
+      level: 13
+    });
+
+    const drawer = new kakao.maps.drawing.DrawingManager({
+      map: map,
+      drawingMode: [kakao.maps.drawing.OverlayType.RECTANGLE],
+      guideTooltip: ['draw', 'drag', 'edit'],
+      rectangleOptions: {
+        draggable: true,
+        removable: true,
+        editable: true,
+        strokeColor: '#39f',
+        fillColor: '#39f',
+        fillOpacity: 0.5
+      },
+    });
+    let info = null;
+    drawer.select(kakao.maps.drawing.OverlayType['RECTANGLE']);
+    drawer.addListener('remove', e => {
+      if(info) info.close();
+      drawer.select(kakao.maps.drawing.OverlayType['RECTANGLE']);
+    });
+    drawer.addListener('state_changed', () => {
+      let data = drawer.getData();
+      if(data.rectangle.length) {
+        data = data.rectangle[0];
+        const top_x = Math.floor((data.sPoint.x > data.ePoint.x ? data.ePoint.x : data.sPoint.x) * 1000000) / 1000000;
+        const top_y = Math.floor((data.sPoint.y > data.ePoint.y ? data.sPoint.y : data.ePoint.y) * 1000000) / 1000000;
+        const bot_x = Math.floor((data.sPoint.x < data.ePoint.x ? data.ePoint.x : data.sPoint.x) * 1000000) / 1000000;
+        const bot_y = Math.floor((data.sPoint.y < data.ePoint.y ? data.sPoint.y : data.ePoint.y) * 1000000) / 1000000;
+
+        if(info) info.close();
+        info = new kakao.maps.InfoWindow({
+          map: map,
+          position: new kakao.maps.LatLng(top_y, top_x + (bot_x - top_x) / 2),
+          content: `<table style='width: max-content'><tr><td>왼쪽 위:</td><td></td><td><input value="${top_y}, ${top_x}" onclick="select()"></td></tr><tr><td>오른쪽 아래:</td><td></td><td><input value="${bot_y}, ${bot_x}" onclick="select()"></td></tr></table>`
+        })
+      }
+    });
+
+  </script>
+
+</body>
+</html>
