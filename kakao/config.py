@@ -44,7 +44,8 @@ def input_config():
                 continue
             print(f"{fill_str_with_space(vaccine['name'], 10)} : {vaccine['code']}")
 
-        vaccine_type = [x.strip() for x in str.upper(input("예약시도할 백신 코드를 모두 알려주세요. 먼저 입력할수록 우선순위가 높습니다: ").strip()).split(",")]
+        print("예약시도할 백신 코드를 쉼표(,)로 구분해서 모두 알려주세요. 먼저 입력할수록 우선순위가 높습니다.")
+        vaccine_type = [x.strip() for x in str.upper(input("예시) VEN00014,VEN00013: ").strip()).split(",")]
         if not all(verify_vaccine_code(vaccine, vaccine_candidates) for vaccine in vaccine_type):
             vaccine_type = None
     print("선택한 백신은", ", ".join([f"{i}순위 {list(filter(lambda vaccine: vaccine['code'] == v, vaccine_candidates))[0]['name']}" for i, v in enumerate(vaccine_type)]), "입니다.\n")
