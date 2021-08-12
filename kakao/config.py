@@ -114,7 +114,7 @@ def load_config():
                 close()
             
             print("\n[현재 설정]")
-            print(f"백신 종류: {previous_used_type} ({next(x['name'] for x in vaccine_candidates if x['code'] == previous_used_type)})")
+            print(f"백신 종류: {[(x['code']+'('+x['name']+')') for x in vaccine_candidates if x['code'] in previous_used_type]}")
             print("top_x:", previous_top_x)
             print("top_y:", previous_top_y)
             print("bottom_x:", previous_bottom_x)
