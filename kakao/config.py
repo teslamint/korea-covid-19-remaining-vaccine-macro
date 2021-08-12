@@ -108,19 +108,25 @@ def load_config():
                 previous_top_y = configuration["topY"]
                 previous_bottom_x = configuration["botX"]
                 previous_bottom_y = configuration["botY"]
-                previous_only_left = configuration["onlyLeft"] == "True"
-            except KeyError:
+                previous_only_left = None if not configuration["onlyLeft"] else configuration["onlyLeft"] == "True"
+
+                if not (previous_used_type and previous_top_x and previous_top_y and previous_bottom_x and previous_bottom_y and previous_only_left != None):
+                    raise
+
+                message = ("\n[현재 설정]"
+                           f"\n백신 종류: {[(x['code']+'('+x['name']+')') for x in vaccine_candidates if x['code'] in previous_used_type]}"
+                           f"\ntop_x: {previous_top_x}"
+                           f"\ntop_y: {previous_top_y}"
+                           f"\nbottom_x: {previous_bottom_x}"
+                           f"\nbottom_y: {previous_bottom_y}"
+                           f"\nonly_left: {previous_only_left} ({'잔여백신이 있는 병원만 조회' if previous_only_left else '모든 병원 조회'})"
+                )
+                print(message)
+
+            except:
                 print('ERROR: 기존에 입력한 설정에서 누락된 정보가 있습니다. config.ini 파일 삭제 후 다시 설정해주세요.')
                 close()
-            
-            print("\n[현재 설정]")
-            print(f"백신 종류: {[(x['code']+'('+x['name']+')') for x in vaccine_candidates if x['code'] in previous_used_type]}")
-            print("top_x:", previous_top_x)
-            print("top_y:", previous_top_y)
-            print("bottom_x:", previous_bottom_x)
-            print("bottom_y:", previous_bottom_y)
-            print(f"only_left: {previous_only_left} ({'잔여백신이 있는 병원만 조회' if previous_only_left else '모든 병원 조회'})")
-            
+
             while True:
                 skip_input = str.lower(input("기존에 입력한 정보로 재검색하시겠습니까? Y/N : "))
                 if skip_input == "y":
