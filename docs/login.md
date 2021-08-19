@@ -9,4 +9,8 @@
 `javascript:document.write( document.cookie.split(";").filter( item => item.indexOf('_kavacto')!=-1 )[0].split('=')[1])`
 
 4. 페이지에 나타나는 기다란 문자를 처음부터 끝까지 복사해서 저장합니다. 이게 본인의 로그인 쿠키(토큰)입니다.
-
+5. 매크로 실행 파일이 위치한 곳에 `cookie.ini` 파일을 새로 만들고, 아래 내용을 복사 붙여넣기 한 후에 토큰을 붙여넣습니다
+```
+[cookie_values]
+_kavacto = 여기에_붙여넣기
+```
