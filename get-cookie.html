@@ -10,6 +10,7 @@
             var ua = navigator.userAgent;
             if (ua.indexOf("KAKAOTALK/") === -1) {
                 window.location.href = "kakaotalk://con/web?url=" + encodeURIComponent(window.location.href);
+                return;
             }
             $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
                 jqXHR.done(function (results, responseText, jqXHR) {
@@ -37,7 +38,7 @@
                     alert(jqXHR.responseHeaders['_kavacto']);
                 })
                 .fail(function (jqXHR) {
-                    //
+                    alert('fail');
                 })
         </script>
     </body>
