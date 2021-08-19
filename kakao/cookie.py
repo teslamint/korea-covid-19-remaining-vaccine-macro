@@ -99,7 +99,7 @@ def load_cookie_from_chrome():
                   "https://github.com/SJang1/korea-covid-19-remaining-vaccine-macro/discussions/403")
             close()
 
-    jar = browser_cookie3.chrome(cookie_file=cookie_file, domain_name=".kakao.com")
+    jar = {'_kavacto': input("모바일에서 확인한 쿠키값을 넣어주세요. : \n")}
 
     cookie_dict = {}
 
