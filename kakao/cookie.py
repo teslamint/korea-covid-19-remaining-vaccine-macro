@@ -106,9 +106,8 @@ def load_cookie_from_chrome():
 
     # 쿠키를 cookie.ini 에 저장한다
     for cookie in jar:
-        if cookie.name == '_kavacto':
-            cookie_dict['_kavacto'] = cookie.value
-            dump_cookie(cookie.value)
-            break
+        cookie_dict['_kavacto'] = cookie.value
+        dump_cookie(cookie.value)
+        break
 
     return cookie_dict
