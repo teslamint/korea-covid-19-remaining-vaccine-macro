@@ -45,12 +45,12 @@ def load_saved_cookie() -> (bool, dict):
     if os.path.exists('cookie.ini'):
         try:
             config_parser.read('cookie.ini')
-            cookie = config_parser['cookie_values']['_kawlt'].strip()
+            cookie = config_parser['cookie_values']['_kavacto'].strip()
 
             if cookie is None or cookie == '':
                 return False
 
-            jar = {'_kawlt': cookie}
+            jar = {'_kavacto': cookie}
             return True, jar
         except KeyError:
             pass
@@ -66,7 +66,7 @@ def dump_cookie(value):
 
     with open('cookie.ini', 'w') as cookie_file:
         config_parser['cookie_values'] = {
-            '_kawlt': value
+            '_kavacto': value
         }
         config_parser.write(cookie_file)
 
@@ -105,8 +105,8 @@ def load_cookie_from_chrome():
 
     # 쿠키를 cookie.ini 에 저장한다
     for cookie in jar:
-        if cookie.name == '_kawlt':
-            cookie_dict['_kawlt'] = cookie.value
+        if cookie.name == '_kavacto':
+            cookie_dict['_kavacto'] = cookie.value
             dump_cookie(cookie.value)
             break
 
