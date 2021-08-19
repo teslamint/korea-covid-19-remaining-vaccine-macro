@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title></title>
+    </head>
+    <body>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+        <script type="text/javascript" defer>
+            var ua = navigator.userAgent;
+            if (ua.indexOf("KAKAOTALK/") === -1) {
+                window.location.href = "kakaotalk://con/web?url=" + encodeURIComponent(window.location.href);
+            }
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.done(function (results, responseText, jqXHR) {
+                    getResponseHeaders(jqXHR);
+                })
+            })
+
+            function getResponseHeaders(jqXHR){
+                jqXHR.responseHeaders = {};
+                var headers = jqXHR.getAllResponseHeaders();
+                headers = headers.split("\n");
+                headers.forEach(function (header) {
+                  header = header.split(": ");
+                  var key = header.shift();
+                  if (key.length == 0) return
+                  // chrome60+ force lowercase, other browsers can be different
+                  key = key.toLowerCase();
+                  jqXHR.responseHeaders[key] = header.join(": ");
+                });
+            }
+
+            // call vaccine-map user api
+            $.ajax("https://vaccine-map.kakao.com/api/v1/user")
+                .done(function (response, textStatus, jqXHR) {
+                    alert(jqXHR.responseHeaders['_kavacto']);
+                })
+                .fail(function (jqXHR) {
+                    //
+                })
+        </script>
+    </body>
+</html>
